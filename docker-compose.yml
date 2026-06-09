@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: opc
+      POSTGRES_PASSWORD: opc_secret_2024
+      POSTGRES_DB: opc_dashboard
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opc"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://opc:opc_secret_2024@db:5432/opc_dashboard
+      JWT_SECRET: change-me-in-production-use-openssl-rand-hex-32
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: "1440"
+      AI_PROVIDER: deepseek
+      DEEPSEEK_API_KEY: ""
+      OPENAI_API_KEY: ""
+      CLAUDE_API_KEY: ""
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./app:/app/app
+
+volumes:
+  pgdata:
