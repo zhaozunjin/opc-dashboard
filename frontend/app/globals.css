@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: #fafbfc;
+  color: #1f2d35;
+}
+
+/* Status colors */
+.status-active { @apply bg-emerald-100 text-emerald-700; }
+.status-stagnant { @apply bg-amber-100 text-amber-700; }
+.status-attention { @apply bg-red-100 text-red-700; }
+.status-not_started { @apply bg-gray-100 text-gray-500; }
